@@ -1,0 +1,14 @@
+<package>
+  <description brief="mark10">
+
+     mark10
+
+  </description>
+  <author>danb0b</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/mark10</url>
+  <depend package="rospy"/>
+</package>
+
+
