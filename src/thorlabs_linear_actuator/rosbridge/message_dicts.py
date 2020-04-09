@@ -392,3 +392,5 @@ message = DictClass(msg)
 
 msg_bbd_10x = dict([(key,msg[key]) for key in ms.BBD10x])
 message_bbd_10x = DictClass(msg_bbd_10x)
+
+msg_rev = dict([(value,key) for key,value in msg.items()])
