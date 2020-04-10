@@ -7,6 +7,7 @@ Created on Wed Apr  8 22:08:30 2020
 
 import message_dicts as md
 import message_sets as ms
+from apt_data import Data,data_types
 
 class Message(object):
     byte_order = 'little'
@@ -48,7 +49,10 @@ class Message(object):
 #            param1 = message[2]
 #            param2 = message[3]
             data = msg[2:4]
-            
+        
+        data =data_types[msg_id].parse(data)
+        self.msg_id = msg_id
+        self.data = data
         return msg_id,data
         
 

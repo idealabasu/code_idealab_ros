@@ -39,6 +39,9 @@ class APTData(object):
 class APTWord(APTData):
     num_bytes = 2
 
+class APTByte(APTData):
+    num_bytes = 1
+
 class APTInt(APTData):
     
     @classmethod

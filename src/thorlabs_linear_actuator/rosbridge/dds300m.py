@@ -68,22 +68,35 @@ class LinearStage(object):
             print(device.getDeviceInfo())
             self.device = device
 
-    def query_controller(self):
-        request = Message.build(md.message_bbd_10x.HW_REQ_INFO,dest = 0x11, source = 0x01)
+    def send_message(self,request):
         self.device.write(request.message)
         time.sleep(.1)
-        s=self.device.read(self.device.getQueueStatus())
-        response = Message(s)
-        print(s)
+        l = self.device.getQueueStatus()
+        if l>0:
+            s=self.device.read(self.device.getQueueStatus())
+            response = Message(s)
+            response.parse()
+            return response
+        
+
+    def info(self,dest):
+        request = Message.build(md.message_bbd_10x.HW_REQ_INFO,dest = dest, source = 0x01)
+        response = self.send_message(request)
         return response
 
-    def query_channel(self,channel):
-        request = Message.build(md.message_bbd_10x.HW_REQ_INFO,dest = channel, source = 0x01)
-        self.device.write(request.message)
-        time.sleep(.1)
-        s=self.device.read(self.device.getQueueStatus())
-        response = Message(s)
-        print(s)
+    def move_home(self,dest):
+        request = Message.build(md.message_bbd_10x.MOT_MOVE_HOME,dest = dest, source = 0x01)
+        response = self.send_message(request)
+        return response
+    
+    def enable_channel(self,dest,value):
+        request = Message.build(md.message_bbd_10x.MOD_SET_CHANENABLESTATE,dest = dest, source = 0x01,param1 = 0x01,param2=value)
+        response = self.send_message(request)
+        return response
+
+    def rack_get_bay_used(self,bay):
+        request = Message.build(md.message_bbd_10x.RACK_REQ_BAYUSED,dest = 0x11, source = 0x01,param1 = bay)
+        response = self.send_message(request)
         return response
 
     def close(self):
@@ -91,11 +104,6 @@ class LinearStage(object):
         time.sleep(1)
         del self.device
 
-
-
-        
-        
-        
 
 class DDS300(LinearStage):
     enc_cnt_per_mm = 20000
@@ -108,18 +116,23 @@ class DDS300(LinearStage):
 
 dds = DDS300('73876440')
 dds.connect()
-rc = dds.query_controller()
-r1 = dds.query_channel(0x21)
-r2 = dds.query_channel(0x22)
-r3 = dds.query_channel(0x23)
+
+rc = dds.info(0x11)
+#r1 = dds.query_channel(0x21)
+#r2 = dds.query_channel(0x22)
+#r = dds.enable_channel(0x21,0x02)
+#r = dds.enable_channel(0x21,0x01)
+#r3 = dds.move_home(0x21)
+r1 = dds.rack_get_bay_used(0x00)
+r2 = dds.rack_get_bay_used(0x01)
 dds.close()
 
 
 import apt_types
 import apt_data
-
-msg_id, data1 = r3.parse()
-d1 = apt_data.HW_GET_INFO.parse(data1)
-d1f = d1.firmware
-f = apt_types.APTLong(d1.firmware)
-print(f.to_int())
+#
+#msg_id, data1 = r3.parse()
+#d1 = apt_data.HW_GET_INFO.parse(data1)
+#d1f = d1.firmware
+#f = apt_types.APTLong(d1.firmware)
+#print(f.to_int())

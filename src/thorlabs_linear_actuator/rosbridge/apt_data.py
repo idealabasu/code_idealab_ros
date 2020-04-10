@@ -6,7 +6,7 @@ Created on Thu Apr  9 10:22:12 2020
 """
 import message_dicts as md
 
-from apt_types import APTWord, APTShort, APTLong
+from apt_types import APTWord, APTShort, APTLong, APTByte
 
 class Data(object):
     names = []
@@ -38,11 +38,17 @@ class HW_GET_INFO(Data):
     types = [APTLong,'string',APTWord,None,None,None,APTWord,APTWord,APTWord]
 
 
-class MOT_GET_VELPARAMS(Data):
-    names = ['','',]
+#class MOT_GET_VELPARAMS(Data):
+#    names = ['','',]
 #    struct = [APTWord,]
     
-    
-data = {}
 
-data[md.message.HW_GET_INFO]=HW_GET_INFO
+class RACK_GET_BAYUSED(Data):
+    names = ['bay','state']
+    sizes = [1,1]
+    types = [APTByte,APTByte]
+
+    
+data_types = {}
+data_types['HW_GET_INFO']=HW_GET_INFO
+data_types['RACK_GET_BAYUSED']=RACK_GET_BAYUSED
