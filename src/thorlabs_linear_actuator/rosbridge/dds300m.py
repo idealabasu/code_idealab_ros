@@ -191,9 +191,9 @@ r8 = dds.mot_req_homeparams(0x21,0x00)
 
 r = dds.enable_channel(0x21,0x01)
 r = dds.move_home(0x21)
-data = apt_data.MOT_MOVE_RELATIVE(0x00,200000)
-r = dds.mot_move_relative(0x21,data)
-r = dds.enable_channel(0x21,0x02)
+#data = apt_data.MOT_MOVE_RELATIVE(0x00,200000)
+#r = dds.mot_move_relative(0x21,data)
+#r = dds.enable_channel(0x21,0x02)
 dds.close()
 
 
