@@ -16,11 +16,11 @@ class Message(object):
         self.message = message
 
     @classmethod
-    def build(cls,message_id,dest,source = 0x01,param1 = 0,param2 = 0,data_packet_length = None):
+    def build(cls,message_id,dest,source = 0x01,param1 = 0,param2 = 0,data = None):
         b01 = message_id.to_bytes(2,cls.byte_order)
-        if data_packet_length is not None:
-            b23 = data_packet_length.to_bytes(2,cls.byte_order)
-            b4 = dest.to_bytes(1,cls.byte_order) | 0x80
+        if data is not None:
+            b23 = len(data.serialize()).to_bytes(2,cls.byte_order)
+            b4 = (dest | 0x80).to_bytes(1,cls.byte_order)
         else:
             b2 = param1.to_bytes(1,cls.byte_order) 
             b3 = param2.to_bytes(1,cls.byte_order)
