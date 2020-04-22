@@ -5,10 +5,11 @@ Created on Wed Apr  8 16:38:27 2020
 @author: danaukes
 """
 
-class DictClass(object):
-    def __init__(self, dict1):
-        for key,value in dict1.items():
-            setattr(self,key,value)
+from idealab_tools.data_exchange.generic_data import GenericData
+#class DictClass(object):
+#    def __init__(self, dict1):
+#        for key,value in dict1.items():
+#            setattr(self,key,value)
 
 
 import message_sets as ms
@@ -378,19 +379,19 @@ msg.update(msg_quad)
 msg.update(msg_tec)
 msg.update(msg_tim_kim)
 
-message_general = DictClass(msg_general)
-message_control = DictClass(msg_control)
-message_filter_flipper = DictClass(msg_filter_flipper)
-message_solenoid = DictClass(msg_solenoid)
-message_piezo = DictClass(msg_piezo)
-message_nano_trak = DictClass(msg_nano_trak)
-message_laser = DictClass(msg_laser)
-message_quad = DictClass(msg_quad)
-message_tec = DictClass(msg_tec)
-message_tim_kim = DictClass(msg_tim_kim)
-message = DictClass(msg)
+message_general = GenericData(**msg_general)
+message_control = GenericData(**msg_control)
+message_filter_flipper = GenericData(**msg_filter_flipper)
+message_solenoid = GenericData(**msg_solenoid)
+message_piezo = GenericData(**msg_piezo)
+message_nano_trak = GenericData(**msg_nano_trak)
+message_laser = GenericData(**msg_laser)
+message_quad = GenericData(**msg_quad)
+message_tec = GenericData(**msg_tec)
+message_tim_kim = GenericData(**msg_tim_kim)
+message = GenericData(**msg)
 
 msg_bbd_10x = dict([(key,msg[key]) for key in ms.BBD10x])
-message_bbd_10x = DictClass(msg_bbd_10x)
+message_bbd_10x = GenericData(**msg_bbd_10x)
 
 msg_rev = dict([(value,key) for key,value in msg.items()])
