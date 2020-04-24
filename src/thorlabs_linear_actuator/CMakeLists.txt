@@ -51,6 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
    FILES
    write.msg
+   thorlab_responses.msg
 )
 
 ## Generate services in the 'srv' folder
