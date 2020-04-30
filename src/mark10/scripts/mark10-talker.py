@@ -37,24 +37,6 @@ def talker_local(ser):
         print(m)
         time.sleep(1/10)
 
-class Mark10Serial(serial.Serial):
-    def __init__(self,port='/dev/ttyUSB0'):
-        super(Mark10Serial,self).__init__(
-            port=port,
-            baudrate=9600,
-            parity=serial.PARITY_NONE,
-            stopbits=serial.STOPBITS_ONE,
-            bytesize=serial.EIGHTBITS)
-        self.close()
-        self.open()
-    def readforce(self,*args,**kwargs):
-        a=super(Mark10Serial,self).readline(*args,**kwargs)
-        try:
-            b = float(a.split('N')[0])
-#            print b
-            return b
-        except:
-            return None,
 
 def parse(s):
     try:
@@ -124,10 +106,3 @@ if __name__=='__main__':
 #                print b
 #            except:
 #                pass    
-#    mark10 = Mark10Serial()
-#    s = '?\n\r'.encode()
-#    mark10.write(s)
-#    r = mark10.readforce()
-#    while True:
-#        while mark10.inWaiting()>0:
-#            print mark10.readforce()
