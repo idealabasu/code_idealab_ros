@@ -1,2 +1,0 @@
-thorlabs_linear_actuator
--DCATKIN_DEVEL_PREFIX=/home/idealab/code_idealab_ros/devel -DCMAKE_INSTALL_PREFIX=/home/idealab/code_idealab_ros/install -G Unix Makefiles
