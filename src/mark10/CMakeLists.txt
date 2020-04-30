@@ -55,7 +55,7 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 add_message_files(
   FILES
-  force.msg
+  Force.msg
 )
 
 ## Generate services in the 'srv' folder

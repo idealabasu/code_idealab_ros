@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # -*- coding: utf-8 -*-
 
 
@@ -6,18 +8,34 @@ import serial
 import time
 import rospy
 
-from mark10.msg import force
+from mark10.msg import Force
+
+class MyException(Exception):
+    pass
 
 def talker(ser):
-    pub = rospy.Publisher('mark10', force, queue_size=10)
+    pub = rospy.Publisher('mark10', Force, queue_size=10)
     rospy.init_node('mark10-talker', anonymous=True)
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
-        m = force(*get_value(ser))
-        print(m)
-        rospy.loginfo(m)
-        pub.publish(m)
+        try:
+            force, unit = parse(get_value(ser))
+            message = Force()
+            message.force = float(force)
+            message.unit = str(unit)
+            print(message)
+            rospy.loginfo(message)
+            pub.publish(message)
+        except MyException:
+            pass
         rate.sleep()
+
+
+def talker_local(ser):
+    while True:
+        m = get_value(ser)
+        print(m)
+        time.sleep(1/10)
 
 class Mark10Serial(serial.Serial):
     def __init__(self,port='/dev/ttyUSB0'):
@@ -36,14 +54,16 @@ class Mark10Serial(serial.Serial):
 #            print b
             return b
         except:
-            return
+            return None,
 
-def parse(string):
+def parse(s):
     try:
-        force,unit = string.split(' ')
+        force,unit = s.split(' ')
         return force,unit
     except ValueError:
-        return None
+        raise MyException()
+    except AttributeError:
+        raise MyException()
 
 def get_value(ser):
     myqueue = ''    
@@ -79,6 +99,13 @@ if __name__=='__main__':
         talker(ser)
     except rospy.ROSInterruptException:
         pass    
+
+#    try:
+#        talker_local(ser)
+#    except Exception as e:
+#        print(e)
+
+    
 #    ser.open()
 #    print ser.isOpen()
 #    jj = 0
