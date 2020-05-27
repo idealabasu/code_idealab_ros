@@ -87,16 +87,6 @@ namespace message_traits
 
 
 template <class ContainerAllocator>
-struct IsFixedSize< ::thorlabs_linear_actuator::thorlab_responses_<ContainerAllocator> >
-  : FalseType
-  { };
-
-template <class ContainerAllocator>
-struct IsFixedSize< ::thorlabs_linear_actuator::thorlab_responses_<ContainerAllocator> const>
-  : FalseType
-  { };
-
-template <class ContainerAllocator>
 struct IsMessage< ::thorlabs_linear_actuator::thorlab_responses_<ContainerAllocator> >
   : TrueType
   { };
@@ -104,6 +94,16 @@ struct IsMessage< ::thorlabs_linear_actuator::thorlab_responses_<ContainerAlloca
 template <class ContainerAllocator>
 struct IsMessage< ::thorlabs_linear_actuator::thorlab_responses_<ContainerAllocator> const>
   : TrueType
+  { };
+
+template <class ContainerAllocator>
+struct IsFixedSize< ::thorlabs_linear_actuator::thorlab_responses_<ContainerAllocator> >
+  : FalseType
+  { };
+
+template <class ContainerAllocator>
+struct IsFixedSize< ::thorlabs_linear_actuator::thorlab_responses_<ContainerAllocator> const>
+  : FalseType
   { };
 
 template <class ContainerAllocator>
