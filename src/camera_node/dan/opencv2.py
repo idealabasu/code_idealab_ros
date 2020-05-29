@@ -15,6 +15,16 @@ import argparse
 import cv2
 import imutils
 import time
+import numpy
+import colorsys
+
+def hsb_to_rgb(value):
+    value = (numpy.array(value)/numpy.array([180,255,255])).flatten().tolist()
+    value = [int(item*255) for item in colorsys.hsv_to_rgb(*value)]
+    value.reverse()
+    return value
+    
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video",
@@ -28,6 +38,8 @@ args = vars(ap.parse_args())
 # list of tracked points
 greenLower = (46, 72, 87)
 greenUpper = (76, 215, 255)
+greenAvg = (numpy.array(greenLower)+numpy.array(greenUpper))/2
+greenAvg = hsb_to_rgb(greenAvg)
 pts = deque(maxlen=args["buffer"])
 # if a video path was not supplied, grab the reference
 # to the webcam
@@ -96,7 +108,7 @@ while True:
 		# otherwise, compute the thickness of the line and
 		# draw the connecting lines
 		thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
-		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+		cv2.line(frame, pts[i - 1], pts[i], greenAvg, thickness)
 	# show the frame to our screen
 	cv2.imshow("test", mask1)
 	cv2.imshow("Frame", frame)
