@@ -63,8 +63,18 @@ def on_high_V_thresh_trackbar(val):
     cv.setTrackbarPos(high_V_name, window_detection_name, high_V)
 parser = argparse.ArgumentParser(description='Code for Thresholding Operations using inRange tutorial.')
 parser.add_argument('--camera', help='Camera divide number.', default=0, type=int)
-args = parser.parse_args()
-cap = cv.VideoCapture(args.camera)
+parser.add_argument("-v", "--video",help="path to the (optional) video file")
+args = vars(parser.parse_args())
+
+# args = parser.parse_args()
+
+if not args.get("video", False):
+# 	cap = VideoStream(src=0).start()
+    cap = cv.VideoCapture(args['camera'])
+# otherwise, grab a reference to the video file
+else:
+	cap = cv.VideoCapture(args["video"])
+
 cv.namedWindow(window_capture_name)
 cv.namedWindow(window_detection_name)
 cv.createTrackbar(low_H_name, window_detection_name , low_H, max_value_H, on_low_H_thresh_trackbar)
@@ -75,7 +85,14 @@ cv.createTrackbar(low_V_name, window_detection_name , low_V, max_value, on_low_V
 cv.createTrackbar(high_V_name, window_detection_name , high_V, max_value, on_high_V_thresh_trackbar)
 while True:
     
+    
     ret, frame = cap.read()
+
+    if frame is None:
+        break
+    
+    frame = cv.resize(frame,(640,360))
+    
     if frame is None:
         break
     frame_HSV = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
@@ -88,3 +105,9 @@ while True:
     key = cv.waitKey(30)
     if key == ord('q') or key == 27:
         break
+
+if not args.get("video", False):
+	cap.stop()
+# otherwise, release the camera
+else:
+	cap.release()
