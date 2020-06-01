@@ -9,7 +9,7 @@ import struct
 class write(genpy.Message):
   _md5sum = "42a1ebb3a1d2bdfda4b28ad577afa942"
   _type = "thorlabs_linear_actuator/write"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """uint8 register
 uint8 value
 
@@ -33,7 +33,7 @@ uint8 value
     """
     if args or kwds:
       super(write, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.register is None:
         self.register = 0
       if self.value is None:
@@ -72,7 +72,7 @@ uint8 value
       (_x.register, _x.value,) = _get_struct_2B().unpack(str[start:end])
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -101,7 +101,7 @@ uint8 value
       (_x.register, _x.value,) = _get_struct_2B().unpack(str[start:end])
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():

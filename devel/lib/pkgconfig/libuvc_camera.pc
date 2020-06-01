@@ -1,0 +1,8 @@
+prefix=/home/pi/code_idealab_ros/devel
+
+Name: libuvc_camera
+Description: Description of libuvc_camera
+Version: 0.0.10
+Cflags: -I/home/pi/code_idealab_ros/devel/include
+Libs: -L${prefix}/lib -llibuvc_camera_nodelet
+Requires: roscpp camera_info_manager dynamic_reconfigure image_transport nodelet sensor_msgs

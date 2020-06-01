@@ -9,7 +9,7 @@ import struct
 class Force(genpy.Message):
   _md5sum = "ef3c99a919c971d6e0f206376229102e"
   _type = "mark10/Force"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """float32 force
 string unit
 """
@@ -32,7 +32,7 @@ string unit
     """
     if args or kwds:
       super(Force, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.force is None:
         self.force = 0.
       if self.unit is None:
@@ -53,7 +53,8 @@ string unit
     :param buff: buffer, ``StringIO``
     """
     try:
-      buff.write(_get_struct_f().pack(self.force))
+      _x = self.force
+      buff.write(_get_struct_f().pack(_x))
       _x = self.unit
       length = len(_x)
       if python3 or type(_x) == unicode:
@@ -84,7 +85,7 @@ string unit
         self.unit = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -94,7 +95,8 @@ string unit
     :param numpy: numpy python module
     """
     try:
-      buff.write(_get_struct_f().pack(self.force))
+      _x = self.force
+      buff.write(_get_struct_f().pack(_x))
       _x = self.unit
       length = len(_x)
       if python3 or type(_x) == unicode:
@@ -126,7 +128,7 @@ string unit
         self.unit = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():

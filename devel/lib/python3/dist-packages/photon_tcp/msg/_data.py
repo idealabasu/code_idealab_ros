@@ -9,7 +9,7 @@ import struct
 class data(genpy.Message):
   _md5sum = "9c1f1555d04a791e7f80e64d4a99bed2"
   _type = "photon_tcp/data"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """string ip_address
 string data
 """
@@ -32,7 +32,7 @@ string data
     """
     if args or kwds:
       super(data, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.ip_address is None:
         self.ip_address = ''
       if self.data is None:
@@ -95,7 +95,7 @@ string data
         self.data = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -148,7 +148,7 @@ string data
         self.data = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():

@@ -9,7 +9,7 @@ import struct
 class forces(genpy.Message):
   _md5sum = "5c28bd9029eb1eda370389d9a92395b2"
   _type = "force_plate/forces"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """float32 f1
 float32 f2
 float32 f3
@@ -34,7 +34,7 @@ float32 f4
     """
     if args or kwds:
       super(forces, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.f1 is None:
         self.f1 = 0.
       if self.f2 is None:
@@ -79,7 +79,7 @@ float32 f4
       (_x.f1, _x.f2, _x.f3, _x.f4,) = _get_struct_4f().unpack(str[start:end])
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -108,7 +108,7 @@ float32 f4
       (_x.f1, _x.f2, _x.f3, _x.f4,) = _get_struct_4f().unpack(str[start:end])
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():

@@ -1,0 +1,8 @@
+prefix=/home/pi/code_idealab_ros/devel
+
+Name: nodelet
+Description: Description of nodelet
+Version: 1.9.16
+Cflags: -I/home/pi/code_idealab_ros/devel/include -I/home/pi/code_idealab_ros/src/nodelet/include -I/usr/include
+Libs: -L${prefix}/lib -lnodeletlib
+Requires: bondcpp message_runtime pluginlib rosconsole roscpp std_msgs

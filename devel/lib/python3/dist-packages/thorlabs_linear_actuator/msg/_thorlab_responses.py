@@ -9,7 +9,7 @@ import struct
 class thorlab_responses(genpy.Message):
   _md5sum = "6de314e2dc76fbff2b6244a6ad70b68d"
   _type = "thorlabs_linear_actuator/thorlab_responses"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """string response"""
   __slots__ = ['response']
   _slot_types = ['string']
@@ -30,7 +30,7 @@ class thorlab_responses(genpy.Message):
     """
     if args or kwds:
       super(thorlab_responses, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.response is None:
         self.response = ''
     else:
@@ -75,7 +75,7 @@ class thorlab_responses(genpy.Message):
         self.response = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -113,7 +113,7 @@ class thorlab_responses(genpy.Message):
         self.response = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():

@@ -1,0 +1,8 @@
+prefix=/home/pi/code_idealab_ros/devel
+
+Name: test_bond
+Description: Description of test_bond
+Version: 1.8.5
+Cflags: -I/home/pi/code_idealab_ros/devel/include
+Libs: -L${prefix}/lib 
+Requires: 
