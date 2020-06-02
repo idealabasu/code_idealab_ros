@@ -7,6 +7,7 @@ import cv_bridge
 
 def nothing(x):
     pass
+
 def talker(centroid_string):
    7     pub = rospy.Publisher('centroid', String, queue_size=10)
    8     rospy.init_node('talker', anonymous=True)
