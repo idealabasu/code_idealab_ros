@@ -99,16 +99,6 @@ namespace message_traits
 
 
 template <class ContainerAllocator>
-struct IsFixedSize< ::tracking::marker_<ContainerAllocator> >
-  : FalseType
-  { };
-
-template <class ContainerAllocator>
-struct IsFixedSize< ::tracking::marker_<ContainerAllocator> const>
-  : FalseType
-  { };
-
-template <class ContainerAllocator>
 struct IsMessage< ::tracking::marker_<ContainerAllocator> >
   : TrueType
   { };
@@ -116,6 +106,16 @@ struct IsMessage< ::tracking::marker_<ContainerAllocator> >
 template <class ContainerAllocator>
 struct IsMessage< ::tracking::marker_<ContainerAllocator> const>
   : TrueType
+  { };
+
+template <class ContainerAllocator>
+struct IsFixedSize< ::tracking::marker_<ContainerAllocator> >
+  : FalseType
+  { };
+
+template <class ContainerAllocator>
+struct IsFixedSize< ::tracking::marker_<ContainerAllocator> const>
+  : FalseType
   { };
 
 template <class ContainerAllocator>

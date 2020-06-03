@@ -25,6 +25,11 @@ class MyException(Exception):
 #    rate = rospy.Rate(50) # 10hz
 
 print(sys.version)
+
+color_ranges = {}
+color_ranges['red']=[((155, 47, 65),(179, 255, 255)),((0, 51, 71),(33, 255, 255))]
+color_ranges['green']=[((33, 51, 71),(65, 255, 255))]
+color_ranges['blue']=[((65, 51, 71),(155, 255, 255))]
         
 class ROSCamera(object):
     def __init__(self):
