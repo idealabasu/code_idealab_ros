@@ -67,14 +67,14 @@ set(image_geometry_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(image_geometry_SOURCE_PREFIX /home/idealab/code_idealab_ros/src/image_geometry)
-  set(image_geometry_DEVEL_PREFIX /home/idealab/code_idealab_ros/devel)
+  set(image_geometry_SOURCE_PREFIX /home/danaukes/code/code_idealab_ros/src/image_geometry)
+  set(image_geometry_DEVEL_PREFIX /home/danaukes/code/code_idealab_ros/devel)
   set(image_geometry_INSTALL_PREFIX "")
   set(image_geometry_PREFIX ${image_geometry_DEVEL_PREFIX})
 else()
   set(image_geometry_SOURCE_PREFIX "")
   set(image_geometry_DEVEL_PREFIX "")
-  set(image_geometry_INSTALL_PREFIX /home/idealab/code_idealab_ros/install)
+  set(image_geometry_INSTALL_PREFIX /home/danaukes/code/code_idealab_ros/install)
   set(image_geometry_PREFIX ${image_geometry_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(image_geometry_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/idealab/code_idealab_ros/src/image_geometry/include;/usr/include;/usr/include/opencv " STREQUAL " ")
+if(NOT "/home/danaukes/code/code_idealab_ros/src/image_geometry/include;/usr/include;/usr/include/opencv " STREQUAL " ")
   set(image_geometry_INCLUDE_DIRS "")
-  set(_include_dirs "/home/idealab/code_idealab_ros/src/image_geometry/include;/usr/include;/usr/include/opencv")
+  set(_include_dirs "/home/danaukes/code/code_idealab_ros/src/image_geometry/include;/usr/include;/usr/include/opencv")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT "http://www.ros.org/wiki/image_geometry " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/idealab/code_idealab_ros/src/image_geometry/include;/usr/include;/
         message(FATAL_ERROR "Project 'image_geometry' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'image_geometry' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/idealab/code_idealab_ros/src/image_geometry/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'image_geometry' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/danaukes/code/code_idealab_ros/src/image_geometry/${idir}'.  ${_report}")
     endif()
     _list_append_unique(image_geometry_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/idealab/code_idealab_ros/devel/lib;/home/idealab/code_idealab_ros/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/danaukes/code/code_idealab_ros/devel/lib;/home/danaukes/code/code_idealab_ros/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

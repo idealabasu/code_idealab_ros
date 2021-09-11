@@ -1,8 +1,8 @@
-prefix=/home/idealab/code_idealab_ros/devel
+prefix=/home/danaukes/code/code_idealab_ros/devel
 
 Name: photon_tcp
 Description: Description of photon_tcp
 Version: 0.0.0
-Cflags: -I/home/idealab/code_idealab_ros/devel/include
+Cflags: -I/home/danaukes/code/code_idealab_ros/devel/include
 Libs: -L${prefix}/lib 
 Requires: message_runtime
