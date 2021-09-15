@@ -42,8 +42,8 @@ import numpy
 import idealab_equipment.read_ati_gamma as gamma
 
 def talker():
-    pub = rospy.Publisher('nano_chatter', write, queue_size=10)
-    rospy.init_node('nano_1', anonymous=True)
+    pub = rospy.Publisher('nano_2_chatter', write, queue_size=10)
+    rospy.init_node('nano_2', anonymous=True)
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
         #hello_str = "hello world %s" % rospy.get_time()

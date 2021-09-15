@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Software License Agreement (BSD License)
 #
 # Copyright (c) 2008, Willow Garage, Inc.
@@ -33,28 +33,45 @@
 #
 # Revision $Id$
 
-## Simple talker demo that listens to std_msgs/Strings published 
+## Simple talker demo that published std_msgs/Strings messages
 ## to the 'chatter' topic
 
 import rospy
-from std_msgs.msg import String
+from ati_nano.msg import write
+import numpy
+import idealab_equipment.read_ati_gamma as gamma
 
-def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
-
-def listener():
-
-    # In ROS, nodes are uniquely named. If two nodes with the same
-    # name are launched, the previous one is kicked off. The
-    # anonymous=True flag means that rospy will choose a unique
-    # name for our 'listener' node so that multiple listeners can
-    # run simultaneously.
-    rospy.init_node('listener', anonymous=True)
-
-    rospy.Subscriber('chatter', String, callback)
-
-    # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin()
+def talker():
+    pub = rospy.Publisher('nano_1_chatter', write, queue_size=10)
+    rospy.init_node('nano_1', anonymous=True)
+    rate = rospy.Rate(10) # 10hz
+    while not rospy.is_shutdown():
+        #hello_str = "hello world %s" % rospy.get_time()
+        force = gamma.get_data(ati_gamma,message)-calib_data
+        
+        data = write()
+        data.fx = force[0][0]
+        data.fy = force[0][1]
+        data.fz = force[0][2]
+        data.tx = force[0][3]
+        data.ty = force[0][4]
+        data.tz = force[0][5]
+        rospy.loginfo(data)
+        pub.publish(data)
+        rate.sleep()
 
 if __name__ == '__main__':
-    listener()
+
+    #TCP_IP = "192.168.1.122"
+    TCP_IP = "192.168.1.121"
+
+    ati_gamma,message = gamma.Init_Ati_Sensor(TCP_IP)
+    calib_data = gamma.Calibrate_Ati_Sensor(ati_gamma,TCP_IP,message)
+    force = gamma.get_data(ati_gamma,message)-calib_data
+
+    print(force)
+
+    try:
+        talker()
+    except rospy.ROSInterruptException:
+        pass
