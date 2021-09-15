@@ -37,19 +37,40 @@
 ## to the 'chatter' topic
 
 import rospy
-from std_msgs.msg import String
+from ati_nano.msg import write
+import numpy
+import idealab_equipment.read_ati_gamma as gamma
 
 def talker():
-    pub = rospy.Publisher('chatter', String, queue_size=10)
-    rospy.init_node('talker', anonymous=True)
+    pub = rospy.Publisher('nano_chatter', write, queue_size=10)
+    rospy.init_node('nano_1', anonymous=True)
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
-        hello_str = "hello world %s" % rospy.get_time()
-        rospy.loginfo(hello_str)
-        pub.publish(hello_str)
+        #hello_str = "hello world %s" % rospy.get_time()
+        force = gamma.get_data(ati_gamma,message)-calib_data
+        
+        data = write()
+        data.fx = force[0][0]
+        data.fy = force[0][1]
+        data.fz = force[0][2]
+        data.tx = force[0][3]
+        data.ty = force[0][4]
+        data.tz = force[0][5]
+        rospy.loginfo(data)
+        pub.publish(data)
         rate.sleep()
 
 if __name__ == '__main__':
+
+    TCP_IP = "192.168.1.122"
+    #TCP_IP = "192.168.1.121"
+
+    ati_gamma,message = gamma.Init_Ati_Sensor(TCP_IP)
+    calib_data = gamma.Calibrate_Ati_Sensor(ati_gamma,TCP_IP,message)
+    force = gamma.get_data(ati_gamma,message)-calib_data
+
+    print(force)
+
     try:
         talker()
     except rospy.ROSInterruptException:
