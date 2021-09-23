@@ -1,0 +1,8 @@
+prefix=/home/danaukes/code/code_idealab_ros/devel
+
+Name: universal_robots
+Description: Description of universal_robots
+Version: 0.0.0
+Cflags: -I/home/danaukes/code/code_idealab_ros/devel/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime
