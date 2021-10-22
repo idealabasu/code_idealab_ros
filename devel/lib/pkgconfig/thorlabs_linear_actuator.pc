@@ -1,8 +1,0 @@
-prefix=/home/danaukes/code/code_idealab_ros/devel
-
-Name: thorlabs_linear_actuator
-Description: Description of thorlabs_linear_actuator
-Version: 0.0.1
-Cflags: -I/home/danaukes/code/code_idealab_ros/devel/include
-Libs: -L${prefix}/lib 
-Requires: message_runtime
