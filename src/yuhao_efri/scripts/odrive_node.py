@@ -21,21 +21,6 @@ from std_msgs.msg import Int16MultiArray
 def odrive_move(usr_cmd, odrive_val):
         
     if usr_cmd == 0:
-        print("finding an odrive...")
-        my_drive = odrive.find_any()
-        axis = my_drive.axis1
-        mo = axis.motor
-        enc = axis.encoder
-        ctrl = axis.controller
-        mo.config.current_lim = 30
-        mo.config.requested_current_range = 90
-        mo.config.calibration_current = 20
-        ctrl.config.vel_limit = 8000
-        mo.config.pole_pairs = 7
-        mo.config.motor_type = 0
-        enc.config.cpr = 8192
-        my_drive.config.dc_max_negative_current = -30
-        print('Motor found{}'.format(mo))
         print('Odrive Calibration Started')
         axis.requested_state = 3
         
@@ -52,8 +37,8 @@ def odrive_move(usr_cmd, odrive_val):
         print('Setting working mode = Closed Loop')
         
     elif usr_cmd ==7:
-        ctrl.input_vel = odrive_val
-        print('Odrive Started, velocity = %s', odrive_val)
+        ctrl.input_vel = int(odrive_val)
+        print('Odrive Started, velocity = {}'.format(odrive_val))
         
     elif usr_cmd == 8:
         axis.requested_state = 1
@@ -64,22 +49,38 @@ def odrive_move(usr_cmd, odrive_val):
         pass
 
 def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + 'Odrive Command Received: %s', data.data)
+    rospy.loginfo(rospy.get_caller_id() + 'Odrive Command Received: {}'.format(data.data))
     odrive_state = data.data[0]
     odrive_val = data.data[1]
     odrive_move(odrive_state, odrive_val)
+    
+def stop_odrive_handler():
+    axis.requested_state = 1
 
 def listener_odrive():
     rospy.Subscriber('controller_talker', Int16MultiArray, callback)
+    rospy.on_shutdown(stop_odrive_handler)
+    rospy.spin()
     
 if __name__ == '__main__':
-    rospy.init_node('odrive_node', anonymous=True)
+    rospy.init_node('odrive_node')
     rospy.loginfo(rospy.get_name() + ' start')
-    
-    try:
-        listener_odrive()
-    except rospy.ROSInterruptException:
-        pass
+    print("finding an odrive...")
+    my_drive = odrive.find_any()
+    axis = my_drive.axis1
+    mo = axis.motor
+    enc = axis.encoder
+    ctrl = axis.controller
+    mo.config.current_lim = 30
+    mo.config.requested_current_range = 90
+    mo.config.calibration_current = 20
+    ctrl.config.vel_limit = 8000
+    mo.config.pole_pairs = 7
+    mo.config.motor_type = 0
+    enc.config.cpr = 8192
+    my_drive.config.dc_max_negative_current = -30
+    print('Motor found{}'.format(mo))
+    listener_odrive()
 
 
 

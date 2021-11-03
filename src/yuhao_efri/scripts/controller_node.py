@@ -19,11 +19,10 @@ from std_msgs.msg import Int16MultiArray
 from std_msgs.msg import Int16
 import roslaunch
 
-def talker_controller(odrive_cmd,odrive_vel):
-    pub = rospy.Publisher('controller_talker', Int16MultiArray, queue_size=1)
+def talker_controller(controller_pub,odrive_cmd,odrive_vel):
 #    rate = rospy.Rate(10) # 10hz
     rospy.loginfo("Controller Command Sent: {}".format([odrive_cmd,odrive_vel]))
-    pub.publish('controller command', [odrive_cmd,odrive_vel])
+    controller_pub.publish(data=[odrive_cmd,odrive_vel])
 
 
 if __name__ == '__main__':
@@ -41,11 +40,13 @@ if __name__ == '__main__':
     rosbag_node = roslaunch.core.Node(rosbag_node_package, rosbag_node_executable)
     rosbag_launch = roslaunch.scriptapi.ROSLaunch()
     
-    rospy.init_node('controller', anonymous=True)
+    rospy.init_node('controller_node')
+    controller_pub = rospy.Publisher('controller_talker', Int16MultiArray, queue_size=1)
+    time.sleep(1)    
     
     #Initialize Odrive
     freq = 0
-    talker_controller(odrive_calib, freq)
+    talker_controller(controller_pub,odrive_calib, freq)
     time.sleep(15)
     
     freq_max = 45
@@ -55,16 +56,17 @@ if __name__ == '__main__':
     #dir_save_bagfile = '/home/yjian154/Documents/bags/'
     
     #Odrive in close_loop mode
-    talker_controller(odrive_close_loop_start, freq)
+    talker_controller(controller_pub, odrive_ctrl_mode_vel, freq)
+    talker_controller(controller_pub, odrive_close_loop_start, freq)
     
     for freq in range(1, freq_max, 1):
-        talker_controller(odrive_change_vel, freq)
+        talker_controller(controller_pub, odrive_change_vel, freq)
         time.sleep(2)
         rosbag_launch.start()
         rosbag_process = rosbag_launch.launch(rosbag_node)
-        print (rosbag_process.is_alive())
 #        rosbag_process = rosbag_launch.launch(rosbag_node)
         time.sleep(20)
+        print (rosbag_process.is_alive())
         rosbag_process.stop()
     #    while toc - tic <= 20:
     #        en_vel = axis.encoder.vel_estimate 
@@ -78,7 +80,7 @@ if __name__ == '__main__':
         # daq_data = np.zeros((chans_in, 1))
         print('Step velocity={} finished'.format(freq))
         
-    talker_controller(odrive_change_vel, freq, rosbag_stop)
+    talker_controller(controller_pub, odrive_change_vel, freq, rosbag_stop)
     t_final = time.time()
     t_total = t_final - t_initial
     print('Test finished, time elipsed: {}'.format(t_total))
