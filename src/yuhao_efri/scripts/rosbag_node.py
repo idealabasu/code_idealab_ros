@@ -12,15 +12,15 @@ import rospy
 import subprocess
 import os
 import signal
-from std_msgs.msg import Int16
+from std_msgs.msg import Int16MultiArray
 
 
-record_command = '/home/yjian154/Documents/ros_yuhao_efri/rosbag_all.sh'
+record_command = '/home/code/code_idealab_ros/src/yuhao_efri/scripts/rosbag_record.sh'
 record_folder = '/home/yjian154/Documents/ros_yuhao_efri/records/'
 
 class RosbagRecord:
     
-    def __init__(self,rosbag_com):    
+    def __init__(self):    
         
         if rospy.has_param(record_command) and rospy.has_param(record_folder):
             self.record_script = rospy.get_param(record_command)
@@ -44,13 +44,24 @@ class RosbagRecord:
         retcode = list_cmd.wait()
         assert retcode == 0, "List command returned %d" % retcode
         for str in list_output.split("\n"):
-            if (str.startswith(rosbag)):
+            if (str.startswith(s)):
                 os.system("rosnode kill " + str)
 
     def stop_recording_handler(self):
         rospy.loginfo(rospy.get_name() + ' stop recording.')
         self.terminate_ros_node("/record")
 
+
+#def callback(data):
+#    rospy.loginfo(rospy.get_caller_id() + 'Odrive Command Received: %s', data.data)
+#    rosbag_cmd = data.data[2]
+#    if rosbag_cmd == 1:
+#        RosbagRecord()
+#    else:
+#        RosbagRecord.stop_recording_handler()
+#
+#def listener_rosbag():
+#    rospy.Subscriber('controller_talker', Int16MultiArray, callback)
     
 if __name__ == '__main__':
     rospy.init_node('rosbag_node')
@@ -58,6 +69,7 @@ if __name__ == '__main__':
 
     # Go to class functions that do all the heavy lifting. Do error checking.
     try:
-        RosbagRecord()
+#        listener_rosbag()
+        rosbag_record = RosbagRecord()
     except rospy.ROSInterruptException:
         pass

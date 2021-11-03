@@ -17,71 +17,71 @@ import os
 import signal
 from std_msgs.msg import Int16MultiArray
 from std_msgs.msg import Int16
-import rosbag_node
+import roslaunch
 
-odrive_calib = 0
-odrive_ctrl_mode_vel = 1
-odrive_ctrl_mode_pos = 2
-odrive_close_loop_start = 3
-odrive_change_vel = 7
-odrive_disable = 8
-
-rosbag_start = 1
-rosbag_stop = 0
-
-def talker_odrive(odrive_comd,odrive_vel):
-    pub = rospy.Publisher('odrive_control', Int16MultiArray, queue_size=1)
+def talker_controller(odrive_cmd,odrive_vel):
+    pub = rospy.Publisher('controller_talker', Int16MultiArray, queue_size=1)
 #    rate = rospy.Rate(10) # 10hz
-    rospy.loginfo("Odrive Command Sent: {}".format([odrive_comd,odrive_vel]))
-    pub.publish([odrive_comd,odrive_vel])
+    rospy.loginfo("Controller Command Sent: {}".format([odrive_cmd,odrive_vel]))
+    pub.publish('controller command', [odrive_cmd,odrive_vel])
 
-def talker_rosbag(rosbag_comd):
-    pub = rospy.Publisher('rosbag_control', Int16, queue_size=1)
-#    rate = rospy.Rate(10) # 10hz
-    rospy.loginfo("Odrive Command Sent: {}".format(rosbag_comd))
-    pub.publish(rosbag_comd)
 
-#if __name__ == '__main__':
+if __name__ == '__main__':
+    odrive_calib = 0
+    odrive_ctrl_mode_vel = 1
+    odrive_ctrl_mode_pos = 2
+    odrive_close_loop_start = 3
+    odrive_change_vel = 7
+    odrive_disable = 8
+    rosbag_start = 1
+    rosbag_stop = 0
     
-rospy.init_node('odrive_talker', anonymous=True)
-rospy.init_node('rosbag_talker', anonymous=True)
-
-#Initialize Odrive
-freq = 0
-talker_odrive(odrive_calib, freq)
-time.sleep(15)
-
-freq_max = 45
-
-t_initial = time.time()
-
-#dir_save_bagfile = '/home/yjian154/Documents/bags/'
-
-#Odrive in close_loop mode
-talker_odrive(odrive_close_loop_start, freq)
-
-for freq in range(1, freq_max, 1):
-    talker_odrive(odrive_change_vel, freq)
-    time.sleep(2)
-    rosbag_node()
-    time.sleep(20)
-    rosbag_node.RosbagRecord.terminate_ros_node()
-#    while toc - tic <= 20:
-#        en_vel = axis.encoder.vel_estimate 
-#        #print(en_vel)
-#
-#        toc = time.time()          
+    rosbag_node_package = 'yuhao_efri'
+    rosbag_node_executable = 'rosbag_node.py'
+    rosbag_node = roslaunch.core.Node(rosbag_node_package, rosbag_node_executable)
+    rosbag_launch = roslaunch.scriptapi.ROSLaunch()
     
-    # Name1 = 'UL_clockwise_forcedata_vel{}'.format(vel)
-    # Name1 += '.csv'
-    # csv.write(Name1, daq_data)
-    # daq_data = np.zeros((chans_in, 1))
-    print('Step velocity={} finished'.format(freq))
+    rospy.init_node('controller', anonymous=True)
     
-talker_odrive(odrive_disable)
-t_final = time.time()
-t_total = t_final - t_initial
-print('Test finished, time elipsed: {}'.format(t_total))
+    #Initialize Odrive
+    freq = 0
+    talker_controller(odrive_calib, freq)
+    time.sleep(15)
+    
+    freq_max = 45
+    
+    t_initial = time.time()
+    
+    #dir_save_bagfile = '/home/yjian154/Documents/bags/'
+    
+    #Odrive in close_loop mode
+    talker_controller(odrive_close_loop_start, freq)
+    
+    for freq in range(1, freq_max, 1):
+        talker_controller(odrive_change_vel, freq)
+        time.sleep(2)
+        rosbag_launch.start()
+        rosbag_process = rosbag_launch.launch(rosbag_node)
+        print (rosbag_process.is_alive())
+#        rosbag_process = rosbag_launch.launch(rosbag_node)
+        time.sleep(20)
+        rosbag_process.stop()
+    #    while toc - tic <= 20:
+    #        en_vel = axis.encoder.vel_estimate 
+    #        #print(en_vel)
+    #
+    #        toc = time.time()          
+        
+        # Name1 = 'UL_clockwise_forcedata_vel{}'.format(vel)
+        # Name1 += '.csv'
+        # csv.write(Name1, daq_data)
+        # daq_data = np.zeros((chans_in, 1))
+        print('Step velocity={} finished'.format(freq))
+        
+    talker_controller(odrive_change_vel, freq, rosbag_stop)
+    t_final = time.time()
+    t_total = t_final - t_initial
+    print('Test finished, time elipsed: {}'.format(t_total))
     
 '''
 AXIS_STATE_UNDEFINED = 0,           //<! will fall through to idle

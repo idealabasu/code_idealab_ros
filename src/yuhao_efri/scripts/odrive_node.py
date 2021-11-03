@@ -18,9 +18,9 @@ from std_msgs.msg import Int16MultiArray
 #client = roslibpy.Ros(host='<192.168.1.164>', port=9090)
 #client.run()
 
-def odrive_move(usr_comd, odrive_val):
+def odrive_move(usr_cmd, odrive_val):
         
-    if usr_comd == 0:
+    if usr_cmd == 0:
         print("finding an odrive...")
         my_drive = odrive.find_any()
         axis = my_drive.axis1
@@ -39,23 +39,23 @@ def odrive_move(usr_comd, odrive_val):
         print('Odrive Calibration Started')
         axis.requested_state = 3
         
-    elif usr_comd == 1:
+    elif usr_cmd == 1:
         print('Setting control mode = Velocity')
         ctrl.config.control_mode = 2
         
-    elif usr_comd == 2:
+    elif usr_cmd == 2:
         print('Setting control mode = Position')
         ctrl.config.control_mode = 3
         
-    elif usr_comd == 3:
+    elif usr_cmd == 3:
         axis.requested_state = 8
         print('Setting working mode = Closed Loop')
         
-    elif usr_comd ==7:
+    elif usr_cmd ==7:
         ctrl.input_vel = odrive_val
         print('Odrive Started, velocity = %s', odrive_val)
         
-    elif usr_comd == 8:
+    elif usr_cmd == 8:
         axis.requested_state = 1
         print("Odrive Disabled")
         
@@ -70,7 +70,7 @@ def callback(data):
     odrive_move(odrive_state, odrive_val)
 
 def listener_odrive():
-    rospy.Subscriber('odrive_control', Int16MultiArray, callback)
+    rospy.Subscriber('controller_talker', Int16MultiArray, callback)
     
 if __name__ == '__main__':
     rospy.init_node('odrive_node', anonymous=True)
