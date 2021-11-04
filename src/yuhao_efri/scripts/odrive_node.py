@@ -15,8 +15,6 @@ import numpy as np
 import rospy
 from std_msgs.msg import Int16MultiArray
 
-#client = roslibpy.Ros(host='<192.168.1.164>', port=9090)
-#client.run()
 
 def odrive_move(usr_cmd, odrive_val):
         
