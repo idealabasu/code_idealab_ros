@@ -11,9 +11,9 @@ import rospy
 from std_msgs.msg import Int16MultiArray
 import roslaunch
 
-def talker_controller(controller_pub,odrive_cmd,odrive_vel):
+def talker_controller(topic,odrive_cmd,odrive_vel):
     rospy.loginfo("Controller Command Sent: {}".format([odrive_cmd,odrive_vel]))
-    controller_pub.publish(data=[odrive_cmd,odrive_vel])
+    topic.publish(data=[odrive_cmd,odrive_vel])
 
 
 if __name__ == '__main__':
@@ -32,12 +32,12 @@ if __name__ == '__main__':
     rosbag_launch = roslaunch.scriptapi.ROSLaunch()
     
     rospy.init_node('controller_node')
-    controller_pub = rospy.Publisher('controller_talker', Int16MultiArray, queue_size=1)
+    odrive_topic = rospy.Publisher('controller_odrive', Int16MultiArray, queue_size=1)
     time.sleep(1)    
     
     #Initialize Odrive
     freq = 0
-    talker_controller(controller_pub,odrive_calib, freq)
+    talker_controller(odrive_topic,odrive_calib, freq)
     time.sleep(15)
     
     freq_max = 45
@@ -46,25 +46,27 @@ if __name__ == '__main__':
 
     
     #Odrive in velocity control
-    talker_controller(controller_pub, odrive_ctrl_mode_vel, freq)
+    talker_controller(odrive_topic, odrive_ctrl_mode_vel, freq)
     #Odrive in close_loop mode    
-    talker_controller(controller_pub, odrive_close_loop_start, freq)
+    talker_controller(odrive_topic, odrive_close_loop_start, freq)
     
-    for freq in range(1, freq_max, 1):
+    for freq in range(1, freq_max+1, 1):
         #Update odrive velocity
-        talker_controller(controller_pub, odrive_change_vel, freq)
+        talker_controller(odrive_topic, odrive_change_vel, freq)
         time.sleep(2)
         rosbag_launch.start()
         rosbag_process = rosbag_launch.launch(rosbag_node)
-
-        time.sleep(20)
-        
-        print (rosbag_process.is_alive())
-        rosbag_process.stop()
+        while True:  
+            if rosbag_process.is_alive() == True:
+                time.sleep(20)
+                rosbag_process.stop()
+                break
+            else:
+                continue
 
         print('Step velocity={} finished'.format(freq))
         
-    talker_controller(controller_pub, odrive_change_vel, freq, rosbag_stop)
+    talker_controller(odrive_topic, odrive_disable, freq)
     t_final = time.time()
     t_total = t_final - t_initial
     print('Test finished, time elipsed: {}'.format(t_total))

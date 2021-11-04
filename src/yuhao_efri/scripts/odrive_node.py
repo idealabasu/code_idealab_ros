@@ -53,7 +53,7 @@ def stop_odrive_handler():
     axis.requested_state = 1
 
 def listener_odrive():
-    rospy.Subscriber('controller_talker', Int16MultiArray, callback)
+    rospy.Subscriber('controller_odrive', Int16MultiArray, callback)
     rospy.on_shutdown(stop_odrive_handler)
     rospy.spin()
     
