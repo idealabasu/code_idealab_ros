@@ -9,9 +9,6 @@ Created on Mon Nov  1 11:24:06 2021
 from __future__ import print_function
 
 import odrive
-import math
-import numpy
-import numpy as np
 import rospy
 from std_msgs.msg import Int16MultiArray
 

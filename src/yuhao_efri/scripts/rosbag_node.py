@@ -9,7 +9,7 @@ Created on Wed Nov  3 15:51:46 2021
 import rospy
 import subprocess
 
-        
+
 def rosbagrecord(record_command,record_location):         
     # Start recording.
     command = "source " + record_command

@@ -6,17 +6,9 @@ Created on Tue Nov  2 11:11:08 2021
 @author: yjian154
 """
 
-import math
-import numpy
-import numpy as np
-import sys
 import time
 import rospy
-import subprocess
-import os
-import signal
 from std_msgs.msg import Int16MultiArray
-from std_msgs.msg import Int16
 import roslaunch
 
 def talker_controller(controller_pub,odrive_cmd,odrive_vel):
@@ -74,4 +66,5 @@ if __name__ == '__main__':
     t_final = time.time()
     t_total = t_final - t_initial
     print('Test finished, time elipsed: {}'.format(t_total))
+    rospy.signal_shutdown('Test Finished, controller closed')
     
