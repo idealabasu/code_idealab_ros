@@ -45,11 +45,13 @@ if __name__ == '__main__':
     t_initial = time.time()
 
     
-    #Odrive in close_loop mode
+    #Odrive in velocity control
     talker_controller(controller_pub, odrive_ctrl_mode_vel, freq)
+    #Odrive in close_loop mode    
     talker_controller(controller_pub, odrive_close_loop_start, freq)
     
     for freq in range(1, freq_max, 1):
+        #Update odrive velocity
         talker_controller(controller_pub, odrive_change_vel, freq)
         time.sleep(2)
         rosbag_launch.start()
