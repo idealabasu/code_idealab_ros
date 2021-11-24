@@ -163,6 +163,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/controller_node.py
   scripts/odrive_node.py
+  scripts/chirp_test.py
   scripts/rosbag_node.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
