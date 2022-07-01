@@ -52,7 +52,7 @@ find_package(catkin REQUIRED COMPONENTS
    FILES
 #   Message1.msg
 #   Message2.msg
-   write.msg
+   force_torque.msg
 )
 
 ## Generate services in the 'srv' folder
