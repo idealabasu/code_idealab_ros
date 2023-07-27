@@ -33,7 +33,7 @@ if __name__ == '__main__':
 	clean_pose = [0.07308504730463028, -1.651834789906637, 1.7938828468322754, -1.70927602449526, -1.5834015051471155, 0.8724178671836853]
 
 
-	ur5.ur5.movej(prepare_pose,0.01,1,wait=True)
+	ur5.urx_method.movej(prepare_pose,0.01,1,wait=True)
 
 	# adjust RPY angle for your experiments
 	x_deg,y_deg,z_deg = 10,10,0
@@ -120,7 +120,7 @@ if __name__ == '__main__':
 	list_to_kill = list(filter(lambda x: x.startswith(prefix), all_node_list))
 	rosnode.kill_nodes(list_to_kill)
 
-	ur5.ur5.movej(clean_pose,0.05,1,True)
+	ur5.urx_method.movej(clean_pose,0.05,1,True)
 
 	ur5.shake_a_clean()
 	# ur5.movej_ur5_ros(prepare_pos_0,0.05,1,True)
