@@ -11,6 +11,7 @@ def rosbagrecord(record_command,record_location):
     rospy.spin()
 
 if __name__ == '__main__':
+    # you will have to modify the path to your user name instead of mine
     record_command = "/home/dongting/Documents/catkin_ws/src/code_idealab_ros/src/grf_exp/src/rosbag_record.sh"
     record_location = "/home/dongting/Documents/exp_data"
     rospy.init_node('record_rosbag_node')
