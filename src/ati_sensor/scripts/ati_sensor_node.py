@@ -14,7 +14,7 @@ from ati_sensor.srv import calibrate_ati
 import std_msgs.msg
 
 def talker(ati_sensor, rec_queue_size, pub_rate):
-    pub = rospy.Publisher('ati_node_chatter', force_torque, queue_size=rec_queue_size)
+    pub = rospy.Publisher('ati_sensor_chatter', force_torque, queue_size=rec_queue_size)
     rate = rospy.Rate(pub_rate)
     while not rospy.is_shutdown():
         force = ati_sensor.get_data()

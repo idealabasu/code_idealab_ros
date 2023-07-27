@@ -9,10 +9,39 @@ from math import pi
 import rosnode
 import sys
 from ur_robot_lite_controller import UR5Controller
+from ati_sensor.srv import Calibrate_ati
+
+
+def start_ati_node():
+    uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
+    roslaunch.configure_logging(uuid)
+    launch = roslaunch.parent.ROSLaunchParent(uuid, ['/home/dongting/Documents/catkin_ws/src/code_idealab_ros/src/ati_sensor/launch/ati_sensor.launch'])
+    launch.start()
+def calibrate_ati():
+    try:
+        rospy.wait_for_service('/calibrate_ati', 20.0)
+        calibrate_service = rospy.ServiceProxy('/calibrate_ati', Calibrate_ati)
+        response = calibrate_service()
+        return response.success  # or whatever field your service response has
+    except (rospy.ServiceException, rospy.ROSException) as e:
+        rospy.logerr("Service call failed: %s" % e)
+        return False
 
 
 if __name__ == '__main__':
 	ur5 = UR5Controller()
+	# Check if ATI node exists
+	if '/ati_node' not in rosnode.get_node_names():
+		rospy.loginfo("ATI node not found, starting ATI node...")
+		start_ati_node()
+
+	# Calibrate ATI sensor
+	if calibrate_ati():
+		rospy.loginfo("ATI sensor successfully calibrated.")
+	else:
+		rospy.logerr("ATI sensor calibration failed.")
+
+
 	# rospy.init_node('exp_node', anonymous=False)
 	moving_vector_left = numpy.array((1,1,0))*math.sqrt(2)/2
 	moving_vector_right = -numpy.array((1,1,0))*math.sqrt(2)/2

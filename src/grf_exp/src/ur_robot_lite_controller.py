@@ -2,9 +2,6 @@ import threading
 import rospy
 from universal_robots_lite.msg import position
 from universal_robots_lite.msg import joint
-from universal_robots_lite.msg import position_command
-from universal_robots_lite.msg import joint_command
-
 import math3d as m3d
 import urx
 import time
@@ -27,7 +24,7 @@ class UR5Controller:
         if self.urx_method.host != ur5_port:
             raise Exception("Failed to connect to UR5 robot.")
         print("Connected to UR5 robot.")
-        print(self.ur5)
+        print(self.urx_method)
 
 
         self.urx_method.set_tcp(self.tcp)

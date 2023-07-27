@@ -21,17 +21,17 @@ class UR5Controller:
         self.payload_m = payload_m
         self.payload_location = payload_location
         # Initialize urx Robot
-        self.ur5 = urx.Robot(self.ur5_port)
+        self.urx_method = urx.Robot(self.ur5_port)
         time.sleep(3)
 
-        if self.ur5.host != ur5_port:
+        if self.urx_method.host != ur5_port:
             raise Exception("Failed to connect to UR5 robot.")
         print("Connected to UR5 robot.")
         print(self.ur5)
 
 
-        self.ur5.set_tcp(self.tcp)
-        self.ur5.set_payload(self.payload_m, self.payload_location)
+        self.urx_method.set_tcp(self.tcp)
+        self.urx_method.set_payload(self.payload_m, self.payload_location)
 
         # Initialize publishers and subscribers
         self.pose_publisher = rospy.Publisher('ur5_pose_publisher', position, queue_size=10)
@@ -64,7 +64,7 @@ class UR5Controller:
         # joint angle is in rad
         rate = rospy.Rate(1000)
         while not rospy.is_shutdown():
-            pose = self.ur5.get_pose()
+            pose = self.urx_method.get_pose()
             orient = pose.get_orient()
             q = orient.unit_quaternion
             pose_data = position()
@@ -75,20 +75,20 @@ class UR5Controller:
             pose_data.p[0] = pose.pos[0]
             pose_data.p[1] = pose.pos[1]
             pose_data.p[2] = pose.pos[2]
-            pose_data.is_moving = self.ur5.is_program_running()
+            pose_data.is_moving = self.urx_method.is_program_running()
             self.pose_publisher.publish(pose_data)
 
-            joint_angles = self.ur5.getj()
+            joint_angles = self.urx_method.getj()
             joint_data = joint()
             joint_data.joint_angles[:] = joint_angles[:]
             self.joint_publisher.publish(joint_data)
             rate.sleep()
 
     # here is some handy functions I used to move the robot, it's all based on
-    def move_ur5(self, v, a, wait=False):
-        current_pose = self.ur5.get_pose()
-        current_pose.pos[:] += self.moving_vector
-        self.ur5.movel(current_pose, vel=v, acc=a, wait=wait)
+    def move_ur5(self,moving_vector, v, a, wait=False):
+        current_pose = self.urx_method.get_pose()
+        current_pose.pos[:] += moving_vector
+        self.urx_method.movel(current_pose, vel=v, acc=a, wait=wait)
 
 
     def rotate_around_h(self,angle_r, v, a, w):
@@ -100,12 +100,12 @@ class UR5Controller:
         # Tct.orient = m3d.Orientation.new_euler((0,pi/2,0), encoding='XYZ')
         # rotate around z-axis
         # Tct.orient = m3d.Orientation.new_euler((0,0,pi/2), encoding='XYZ')
-        pose = self.ur5.get_pose()
+        pose = self.urx_method.get_pose()
         Tct = m3d.Transform()
         Tct.pos = m3d.Vector(0, 0, 0)
         Tct.orient = m3d.Orientation.new_euler(angle_r, encoding='XYZ')
         new_pos = pose * Tct
-        self.ur5.movel(new_pos, vel=v, acc=1, wait=w)
+        self.urx_method.movel(new_pos, vel=v, acc=1, wait=w)
 
 
     def shake_a_clean(self):

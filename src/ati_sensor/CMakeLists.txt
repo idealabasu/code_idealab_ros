@@ -60,7 +60,7 @@ roslaunch_add_file_check(launch)
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
-  calibrate_ati.srv
+  Calibrate_ati.srv
 )
 
 ## Generate actions in the 'action' folder
