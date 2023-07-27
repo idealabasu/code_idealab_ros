@@ -1,8 +1,0 @@
-roscore
-ROS_NAMESPACE=/camera1 rosrun uvc_cama_mod camera_node
-rosrun image_view image_view image:=camera1/image_raw
-rosrun camera_calibration cameracalibrator.py --size 7x4 --square 0.053 image:=/camera1/image_raw camera:=/camera1
-ROS_NAMESPACE=camera1 rosrun image_proc image_proc
-rosrun image_view image_view image:=camera1/image_re_color
-
- 
