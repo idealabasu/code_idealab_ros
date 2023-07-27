@@ -1,0 +1,11 @@
+<launch>
+  <arg name="ati_ip" default="192.168.1.122" />  <!-- Set the default value here -->
+
+  <node
+    pkg="ati_sensor"
+    type="ati_sensor_node.py"
+    name="ati_node"
+    output="screen">
+    <param name="ati_ip" value="$(arg ati_ip)" /> 
+  </node>
+</launch>

@@ -1,0 +1,9 @@
+<launch>
+    <!-- Set the UR5 IP address, default to 192.168.1.104 -->
+    <arg name="ur5_ip" default="192.168.1.104"/>
+
+    <node name="talker_ur5e" pkg="universal_robots_lite" type="talker_ur5e.py" output="screen">
+        <!-- Pass the UR5 IP argument to the node -->
+        <param name="ur5_ip" value="$(arg ur5_ip)"/>
+    </node>
+</launch>
